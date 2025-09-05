@@ -10,14 +10,19 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 function RegisterPage() {
+  const { user, isAuthenticated, isLoading: authLoading, session, completeProfile } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0); // 0: Google auth, 1: Personal data
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [googleUser, setGoogleUser] = useState<any>(null);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -25,6 +30,27 @@ function RegisterPage() {
     dni: "",
     phone: "",
   });
+
+  // Verificar si viene con step=2 en la URL
+  useEffect(() => {
+    const step = searchParams.get('step');
+    if (step === '2' && isAuthenticated) {
+      setCurrentStep(1); // Ir directamente al paso 2 (completar perfil)
+    }
+  }, [searchParams, isAuthenticated]);
+
+  // Si el usuario ya está autenticado, manejar redirección
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      if (user.profileCompleted) {
+        // Si ya tiene el perfil completo, redirigir al dashboard
+        router.push("/dashboard");
+      } else {
+        // Si no tiene perfil completo, ir al paso 2 para completar
+        setCurrentStep(1);
+      }
+    }
+  }, [isAuthenticated, user, router]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -53,17 +79,18 @@ function RegisterPage() {
     setError("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Opción 1: Popup automático (NextAuth decide)
+      const result = await signIn("google", {
+        redirect: false,
+        callbackUrl: window.location.origin + "/registrarse",
+      });
 
-      // Simulate Google user data
-      const mockGoogleUser = {
-        email: "usuario@gmail.com",
-        name: "Usuario Google",
-        picture: "https://via.placeholder.com/100",
-      };
-
-      setGoogleUser(mockGoogleUser);
-      setCurrentStep(1); // Move to personal data step
+      if (result?.error) {
+        setError("Error al conectar con Google. Por favor, intenta nuevamente.");
+      } else {
+        // Autenticación exitosa o en progreso
+        // El useEffect detectará la sesión automáticamente
+      }
     } catch (err) {
       setError("Error al conectar con Google. Por favor, intenta nuevamente.");
     } finally {
@@ -84,13 +111,19 @@ function RegisterPage() {
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Complete registration:", { ...googleUser, ...formData });
-      setSuccess(true);
+      // Usar el hook personalizado para completar el perfil
+      const result = await completeProfile(formData);
 
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 2000);
+      if (result.success) {
+        console.log("Registro completado:", result.data);
+        setSuccess(true);
+
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 2000);
+      } else {
+        setError(result.error || "Error al completar el registro");
+      }
     } catch (err) {
       setError(
         "Error al completar el registro. Por favor, intenta nuevamente."
@@ -198,7 +231,7 @@ function RegisterPage() {
                     ¿Ya tienes una cuenta?{" "}
                   </span>
                   <Link
-                    href="/login"
+                    href="/iniciar-sesion"
                     className="text-[var(--color-primary)] hover:underline font-medium"
                   >
                     Inicia sesión aquí
@@ -210,14 +243,14 @@ function RegisterPage() {
             {currentStep === 1 && (
               <div className="space-y-6">
                 {/* Google user info display */}
-                {googleUser && (
+                {session?.user && (
                   <div className="flex items-center space-x-3 p-3 bg-[#ededed] rounded-lg">
                     <div className="w-10 h-10 bg-[var(--color-primary)] rounded-full flex items-center justify-center">
                       <User className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <p className="font-semibold text-sm">
-                        {googleUser.email}
+                        {session.user.email}
                       </p>
                       <p className="font-light text-xs text-gray-600">
                         Cuenta de Google conectada

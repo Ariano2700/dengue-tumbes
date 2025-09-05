@@ -2,42 +2,67 @@
 import { GgGoogle } from "@/components/icons/GgGoogle";
 import { AlertCircle, ArrowLeft, Shield } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 function LoginPage() {
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Si el usuario ya está autenticado, redirigir según su estado
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Verificar si viene con un callbackUrl específico
+      const callbackUrl = searchParams.get('callbackUrl');
+      
+      if (user.profileCompleted) {
+        // Si tiene perfil completo, ir al destino solicitado o dashboard
+        router.push(callbackUrl || "/dashboard");
+      } else {
+        // Si no tiene perfil completo, ir a completar registro (paso 2)
+        router.push("/registrarse?step=2");
+      }
+    }
+  }, [isAuthenticated, user, router, searchParams]);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     setError("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Usar NextAuth para autenticar con Google
+      const result = await signIn("google", {
+        redirect: false,
+        callbackUrl: window.location.origin + "/iniciar-sesion",
+      });
 
-      // Simulate checking if user has complete profile
-      const mockUserProfile = {
-        email: "usuario@gmail.com",
-        hasCompleteProfile: Math.random() > 0.5, // Randomly simulate complete/incomplete profile
-      };
-
-      console.log("Google login successful:", mockUserProfile);
-
-      if (!mockUserProfile.hasCompleteProfile) {
-        // Redirect to register to complete profile
-        window.location.href = "/registrarse";
+      if (result?.error) {
+        setError("Error al iniciar sesión con Google. Por favor, intenta nuevamente.");
       } else {
-        // Redirect to dashboard
-        window.location.href = "/dashboard";
+        // La autenticación fue exitosa
+        // El useEffect se encargará de redirigir según el estado del usuario
+        console.log("Login exitoso");
       }
     } catch (err) {
-      setError(
-        "Error al iniciar sesión con Google. Por favor, intenta nuevamente."
-      );
+      setError("Error al iniciar sesión con Google. Por favor, intenta nuevamente.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Mostrar loading si está verificando autenticación
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -86,7 +111,7 @@ function LoginPage() {
                   ¿No tienes una cuenta?{" "}
                 </span>
                 <Link
-                  href="/register"
+                  href="/registrarse"
                   className="text-[var(--color-primary)] hover:underline font-medium"
                 >
                   Regístrate aquí

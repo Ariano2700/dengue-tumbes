@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "public"."User" ADD COLUMN     "profileCompleted" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "firstName" DROP NOT NULL,
+ALTER COLUMN "lastName" DROP NOT NULL,
+ALTER COLUMN "dni" DROP NOT NULL,
+ALTER COLUMN "phone" DROP NOT NULL;

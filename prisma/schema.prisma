@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+  //output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/* ================= ENUMS ================= */
+enum RiskLevel {
+  low
+  medium
+  high
+}
+
+enum SymptomSeverity {
+  mild
+  moderate
+  severe
+}
+
+/* ================= MODELOS ================= */
+model User {
+  id               String    @id @default(uuid())
+  email            String?   @unique
+  firstName        String?   // Opcional inicialmente, se completa después
+  lastName         String?   // Opcional inicialmente, se completa después
+  dni              String?   @unique  // Opcional inicialmente, se completa después
+  phone            String?   // Opcional inicialmente, se completa después
+  name             String?   // nombre completo (Google, etc.)
+  picture          String?   // foto de perfil
+  profileCompleted Boolean   @default(false) // Para saber si completó su perfil
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  autoevaluations Autoevaluation[]
+}
+
+model Autoevaluation {
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  riskLevel   RiskLevel
+  temperature Float
+  daysSick    Int
+
+  latitude    Float?
+  longitude   Float?
+
+  createdAt   DateTime    @default(now())
+
+  symptoms    AutoevaluationSymptom[]
+
+  @@index([userId, createdAt])
+  @@index([riskLevel, createdAt])
+}
+
+model Symptom {
+  id        String           @id @default(uuid())
+  code      String           @unique  // Ej: "fever"
+  name      String           // Ej: "Fiebre"
+  severity  SymptomSeverity
+  createdAt DateTime         @default(now())
+
+  autoevaluations AutoevaluationSymptom[]
+}
+
+model AutoevaluationSymptom {
+  autoevaluationId String
+  symptomId        String
+
+  autoevaluation   Autoevaluation @relation(fields: [autoevaluationId], references: [id])
+  symptom          Symptom        @relation(fields: [symptomId], references: [id])
+
+  @@id([autoevaluationId, symptomId])
+}
