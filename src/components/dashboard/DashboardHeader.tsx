@@ -12,11 +12,11 @@ export function DashboardHeader({
   showHealthBadge = false,
 }: DashboardHeaderProps) {
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background px-4">
+    <header className="flex h-[73px] w-full shrink-0 items-center gap-2 border-b border-gray-300 px-4">
       <div className="-ml-1" />
       <div className="flex-1">
         <h1 className="text-lg font-semibold">{title}</h1>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-gray-500">{description}</p>
       </div>
       {showHealthBadge && (
         <div className="bg-dengue-healthy text-white">

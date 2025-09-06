@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account, profile }) {
-      console.log("Usuario autenticando:", { user, account, profile });
+      //console.log("Usuario autenticando:", { user, account, profile });
       
       // Aquí puedes guardar el usuario en tu BD manualmente si quieres
       if (account?.provider === "google" && user.email) {

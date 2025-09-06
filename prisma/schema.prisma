@@ -49,6 +49,7 @@ model Autoevaluation {
 
   latitude    Float?
   longitude   Float?
+  address     String?     // Dirección readable de la ubicación
 
   createdAt   DateTime    @default(now())
 
@@ -56,6 +57,7 @@ model Autoevaluation {
 
   @@index([userId, createdAt])
   @@index([riskLevel, createdAt])
+  @@index([latitude, longitude]) // Índice para consultas geoespaciales
 }
 
 model Symptom {
