@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default:
-      "Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación de Dengue",
+      "Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación",
     template: "%s | Dengue Cero Tumbes",
   },
   description:
-    "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú. Protege a tu comunidad del dengue con herramientas digitales del MINSA.",
+    "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú. Protege a tu comunidad del dengue con herramientas digitales.",
   keywords: [
     "dengue",
     "prevención dengue",
@@ -37,10 +37,22 @@ export const metadata: Metadata = {
     "monitoreo casos dengue",
     "sistema salud",
     "prevención enfermedades vectoriales",
+    "salud comunitaria",
+    "dengue Tumbes",
+    "prevención dengue Perú",
+    "autoevaluación síntomas dengue",
+    "MINSA dengue",
+    "mosquito Aedes aegypti",
+    "fiebre dengue Tumbes",
+    "sistema salud pública",
+    "epidemiología dengue",
+    "monitoreo casos dengue",
+    "salud comunitaria Tumbes",
+    "enfermedades vectoriales",
   ],
-  authors: [{ name: "MINSA Tumbes" }, { name: "Dengue Cero Team" }],
+  authors: [{ name: "Ariano Alban" }, { name: "Dengue Cero Team" }],
   creator: "Sistema de Salud Pública Tumbes",
-  publisher: "MINSA - Ministerio de Salud del Perú",
+  publisher: "Ariano Alban",
   formatDetection: {
     email: false,
     address: false,

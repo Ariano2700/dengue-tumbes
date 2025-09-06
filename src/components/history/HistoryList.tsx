@@ -1,6 +1,7 @@
 import React from "react"
 import Link from "next/link"
 import { Activity, AlertTriangle, CheckCircle, Eye, History, Calendar } from "lucide-react"
+import { formatPeruDateTime } from "@/utils/dateUtils"
 
 interface EvaluationRecord {
   id: string
@@ -18,6 +19,7 @@ interface HistoryListProps {
 }
 
 export function HistoryList({ filteredHistory, onSelectRecord }: HistoryListProps) {
+ 
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case "high":
@@ -102,7 +104,7 @@ export function HistoryList({ filteredHistory, onSelectRecord }: HistoryListProp
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
-                    {new Date(record.date).toLocaleDateString("es-PE")} - {record.time}
+                    {record.date} - {record.time}
                   </span>
                   <div className="flex items-center gap-4">
                     <span>{record.symptomsCount} síntomas</span>

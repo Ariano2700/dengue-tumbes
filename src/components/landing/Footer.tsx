@@ -28,21 +28,19 @@ function Footer() {
           <div className="flex items-center gap-6 text-sm text-gray-400">
             <Link
               href="/about"
+              aria-label="Ir a la sección de acerca de"
+              title="Ir a la sección de acerca de"
               className="hover:text-foreground transition-colors"
             >
               Acerca de
             </Link>
             <Link
               href="/privacy"
+              aria-label="Ir a la sección de privacidad"
+              title="Ir a la sección de privacidad"
               className="hover:text-foreground transition-colors"
             >
               Privacidad
-            </Link>
-            <Link
-              href="/contact"
-              className="hover:text-foreground transition-colors"
-            >
-              Contacto
             </Link>
           </div>
         </div>

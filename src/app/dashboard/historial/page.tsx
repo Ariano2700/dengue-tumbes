@@ -4,6 +4,7 @@ import { HistoryDetail } from "@/components/history/HistoryDetail";
 import { HistoryFilters } from "@/components/history/HistoryFilters";
 import { HistoryList } from "@/components/history/HistoryList";
 import { HistoryStats } from "@/components/history/HistoryStats";
+import { formatPeruDateTime } from "@/utils/dateUtils";
 import { Activity, Loader2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -48,20 +49,22 @@ interface ApiResponse {
 }
 
 // Mapear datos de API a formato de componentes
-const mapApiToEvaluationRecord = (item: AutoevaluationRecord) => ({
-  id: item.id,
-  result: getRiskMessage(item.riskLevel),
-  riskLevel: item.riskLevel,
-  date: new Date(item.createdAt).toISOString().split('T')[0],
-  time: new Date(item.createdAt).toLocaleTimeString('es-PE', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  }),
-  symptomsCount: item.symptoms.length,
-  symptoms: item.symptoms,
-  temperature: item.temperature,
-  recommendations: getRiskRecommendations(item.riskLevel),
-});
+const mapApiToEvaluationRecord = (item: AutoevaluationRecord) => {
+  // Usar las utilidades de fecha para zona horaria de Perú
+  const { date, time } = formatPeruDateTime(item.createdAt);
+  
+  return {
+    id: item.id,
+    result: getRiskMessage(item.riskLevel),
+    riskLevel: item.riskLevel,
+    date,
+    time,
+    symptomsCount: item.symptoms.length,
+    symptoms: item.symptoms,
+    temperature: item.temperature,
+    recommendations: getRiskRecommendations(item.riskLevel),
+  };
+};
 
 function getRiskMessage(riskLevel: string): string {
   switch (riskLevel) {

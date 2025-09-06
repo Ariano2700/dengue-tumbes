@@ -17,14 +17,14 @@ function LoginPage() {
 
   // Si el usuario ya está autenticado, redirigir según su estado
   useEffect(() => {
-    console.log("Login page useEffect:", {
-      isInitialized,
-      hasRedirected,
-      authLoading,
-      isAuthenticated,
-      user,
-      profileCompleted: user?.profileCompleted,
-    });
+    // console.log("Login page useEffect:", {
+    //   isInitialized,
+    //   hasRedirected,
+    //   authLoading,
+    //   isAuthenticated,
+    //   user,
+    //   profileCompleted: user?.profileCompleted,
+    // });
     
     if (!isInitialized || hasRedirected || authLoading) return;
 
@@ -32,16 +32,16 @@ function LoginPage() {
       // Verificar si viene con un callbackUrl específico
       const callbackUrl = searchParams.get('callbackUrl');
       
-      console.log("User is authenticated, profileCompleted:", user.profileCompleted);
+      //console.log("User is authenticated, profileCompleted:", user.profileCompleted);
       
       setHasRedirected(true);
       if (user.profileCompleted) {
         // Si tiene perfil completo, ir al destino solicitado o dashboard
-        console.log("Redirecting to dashboard/callback");
+        //console.log("Redirecting to dashboard/callback");
         router.push(callbackUrl || "/dashboard");
       } else {
         // Si no tiene perfil completo, ir a completar registro (paso 2)
-        console.log("Redirecting to complete profile");
+        //console.log("Redirecting to complete profile");
         router.push("/registrarse?step=2");
       }
     }
@@ -63,7 +63,6 @@ function LoginPage() {
       } else {
         // La autenticación fue exitosa
         // El useEffect se encargará de redirigir según el estado del usuario
-        console.log("Login exitoso");
       }
     } catch (err) {
       setError("Error al iniciar sesión con Google. Por favor, intenta nuevamente.");

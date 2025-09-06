@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
             },
           });
         } catch (error) {
-          console.error("Error guardando usuario:", error);
+          //console.error("Error guardando usuario:", error);
           // Continuar con la autenticación aunque falle el guardado
         }
       }

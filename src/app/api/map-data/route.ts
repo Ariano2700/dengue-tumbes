@@ -170,13 +170,31 @@ function clusterNearbyPoints(evaluations: any[], radiusKm = 0.5) {
 
     cluster.averageTemp = cluster.evaluations.reduce((sum, evaluation) => sum + evaluation.temperature, 0) / cluster.evaluations.length;
 
-    // Determinar nivel de riesgo del cluster
+    // Determinar nivel de riesgo del cluster con lógica mejorada
     const riskEntries = Object.entries(cluster.riskLevels) as [string, number][];
-    const dominantRisk = riskEntries.reduce((a, b) => 
-      a[1] > b[1] ? a : b
-    )[0];
+    
+    // Ordenar por cantidad (descendente) y luego por prioridad de riesgo
+    const riskPriority = { high: 3, medium: 2, low: 1 };
+    
+    const dominantRisk = riskEntries
+      .filter(([risk, count]) => count > 0) // Solo considerar riesgos con casos
+      .sort((a, b) => {
+        // Primero ordenar por cantidad de casos (descendente)
+        if (b[1] !== a[1]) {
+          return b[1] - a[1];
+        }
+        // En caso de empate, ordenar por prioridad de riesgo (descendente)
+        return riskPriority[b[0] as keyof typeof riskPriority] - riskPriority[a[0] as keyof typeof riskPriority];
+      })[0];
 
-    (cluster as any).dominantRisk = dominantRisk;
+    // Si hay empate entre riesgo alto y bajo (como en tu ejemplo), elegir el intermedio
+    if (cluster.riskLevels.high > 0 && cluster.riskLevels.low > 0 && 
+        cluster.riskLevels.high === cluster.riskLevels.low && 
+        cluster.riskLevels.medium === 0) {
+      (cluster as any).dominantRisk = 'medium'; // Promedio entre alto y bajo
+    } else {
+      (cluster as any).dominantRisk = dominantRisk ? dominantRisk[0] : 'low';
+    }
 
     clusters.push(cluster);
   }

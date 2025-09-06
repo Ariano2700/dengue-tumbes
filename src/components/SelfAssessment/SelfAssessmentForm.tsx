@@ -73,7 +73,6 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
         setErrorLoadingSymptoms(null)
       } catch (error) {
         console.error('Error fetching symptoms:', error)
-        console.error('Response data might be:', error)
         setErrorLoadingSymptoms(error instanceof Error ? error.message : 'Error al cargar los síntomas')
       } finally {
         setLoadingSymptoms(false)

@@ -5,7 +5,7 @@ import { useAuth } from './useAuth';
 
 interface UserStats {
   lastEvaluation: {
-    result: 'Sin Síntomas' | 'Síntomas Leves' | 'Síntomas Moderados' | 'Síntomas Graves';
+    result: 'Sin Síntomas' | 'Síntomas Leves' | 'Síntomas Moderados' | 'Síntomas Graves' | 'Riesgo Bajo';
     date: string;
     daysAgo: number;
     color: string;
@@ -13,12 +13,6 @@ interface UserStats {
   totalEvaluations: {
     count: number;
     thisMonth: number;
-  };
-  nearbyCases: {
-    count: number;
-    zone: string;
-    severity: 'low' | 'medium' | 'high';
-    color: string;
   };
 }
 
@@ -49,25 +43,19 @@ export function useUserStats() {
         throw new Error('Error al cargar estadísticas');
       }
 
-      const data = await response.json();
-      
+      const data = await response.json(); 
+     
       // Procesar datos de la API
       const processedStats: UserStats = {
         lastEvaluation: data.lastEvaluation ? {
           result: data.lastEvaluation.result,
           date: data.lastEvaluation.date,
           daysAgo: data.lastEvaluation.daysAgo,
-          color: getResultColor(data.lastEvaluation.result)
+          color: data.lastEvaluation.color || getResultColor(data.lastEvaluation.result)
         } : null,
         totalEvaluations: {
           count: data.totalEvaluations.count || 0,
           thisMonth: data.totalEvaluations.thisMonth || 0
-        },
-        nearbyCases: {
-          count: data.nearbyCases.count || 0,
-          zone: data.nearbyCases.zone || 'tu zona',
-          severity: getSeverityLevel(data.nearbyCases.count),
-          color: getCasesColor(data.nearbyCases.count)
         }
       };
 
@@ -79,8 +67,7 @@ export function useUserStats() {
       // Datos fallback en caso de error
       setStats({
         lastEvaluation: null,
-        totalEvaluations: { count: 0, thisMonth: 0 },
-        nearbyCases: { count: 0, zone: 'tu zona', severity: 'low', color: 'text-green-600' }
+        totalEvaluations: { count: 0, thisMonth: 0 }
       });
     } finally {
       setIsLoading(false);
@@ -94,6 +81,7 @@ export function useUserStats() {
   const getResultColor = (result: string): string => {
     switch (result) {
       case 'Sin Síntomas':
+      case 'Riesgo Bajo':
         return 'text-green-600';
       case 'Síntomas Leves':
         return 'text-yellow-600';
@@ -104,18 +92,6 @@ export function useUserStats() {
       default:
         return 'text-gray-600';
     }
-  };
-
-  const getSeverityLevel = (count: number): 'low' | 'medium' | 'high' => {
-    if (count <= 2) return 'low';
-    if (count <= 5) return 'medium';
-    return 'high';
-  };
-
-  const getCasesColor = (count: number): string => {
-    if (count <= 2) return 'text-green-600';
-    if (count <= 5) return 'text-yellow-600';
-    return 'text-red-600';
   };
 
   const formatDaysAgo = (daysAgo: number): string => {

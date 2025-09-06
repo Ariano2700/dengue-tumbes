@@ -36,6 +36,7 @@ function Symptoms() {
       className="py-16"
       aria-labelledby="symptoms-title"
       role="region"
+      id="sintomas"
     >
       <div className="container mx-auto px-4">
         <div

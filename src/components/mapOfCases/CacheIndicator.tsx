@@ -19,7 +19,7 @@ export function CacheIndicator() {
   
   if (!lastFetch || currentTime === null) {
     return (
-      <div className="inline-flex items-center gap-2 px-2 py-1 bg-gray-100 text-gray-600 rounded-md text-xs">
+      <div className="hidden items-center gap-2 px-2 py-1 bg-gray-100 text-gray-600 rounded-md text-xs">
         <WifiOff className="w-3 h-3" />
         Sin datos
       </div>
@@ -41,7 +41,7 @@ export function CacheIndicator() {
 
   if (isLoading) {
     return (
-      <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-100 text-blue-600 rounded-md text-xs animate-pulse">
+      <div className="hidden items-center gap-2 px-2 py-1 bg-blue-100 text-blue-600 rounded-md text-xs animate-pulse">
         <Wifi className="w-3 h-3" />
         Cargando...
       </div>
@@ -49,7 +49,7 @@ export function CacheIndicator() {
   }
 
   return (
-    <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md text-xs ${
+    <div className={`hidden items-center gap-2 px-2 py-1 rounded-md text-xs ${
       isExpired 
         ? 'bg-yellow-100 text-yellow-600' 
         : 'bg-green-100 text-green-600'

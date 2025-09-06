@@ -6,50 +6,9 @@ import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import RiskMap from "@/components/landing/RiskMap";
 import Symptoms from "@/components/landing/Symptoms";
+import LenisScroll from "@/components/landing/LenisScroll";
 
 export const metadata: Metadata = {
-  title:
-    "Dengue Cero Tumbes | Sistema Oficial de Prevención del Dengue - MINSA",
-  description:
-    "Sistema web oficial del MINSA para prevención, autoevaluación de síntomas y monitoreo epidemiológico del dengue en Tumbes, Perú. Protege a tu comunidad con herramientas digitales de salud pública.",
-  keywords: [
-    "dengue Tumbes",
-    "prevención dengue Perú",
-    "autoevaluación síntomas dengue",
-    "MINSA dengue",
-    "mosquito Aedes aegypti",
-    "fiebre dengue Tumbes",
-    "sistema salud pública",
-    "epidemiología dengue",
-    "monitoreo casos dengue",
-    "salud comunitaria Tumbes",
-    "enfermedades vectoriales",
-  ],
-  openGraph: {
-    title: "Dengue Cero Tumbes | Sistema Oficial de Prevención del Dengue",
-    description:
-      "Protege a tu comunidad del dengue con autoevaluación de síntomas, mapas de riesgo y herramientas de prevención. Sistema oficial del MINSA para Tumbes, Perú.",
-    images: [
-      {
-        url: "/og-home.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Dengue Cero Tumbes - Prevención del Dengue con Tecnología",
-      },
-    ],
-    type: "website",
-    locale: "es_PE",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Dengue Cero Tumbes | Prevención del Dengue",
-    description:
-      "Sistema oficial del MINSA para autoevaluación de síntomas y prevención del dengue en Tumbes, Perú.",
-    images: ["/twitter-home.jpg"],
-  },
-  alternates: {
-    canonical: "/",
-  },
   other: {
     "geo.region": "PE-TUM",
     "geo.placename": "Tumbes, Perú",
@@ -80,6 +39,7 @@ export default function LandingPage() {
           ]),
         }}
       />
+      <LenisScroll />
       <Header />
       <main
         role="main"

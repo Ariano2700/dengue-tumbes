@@ -12,7 +12,7 @@ function Dashboard() {
       description="Monitorea tu salud y previene el dengue"
       showHealthBadge={true}
     >
-      {/* <QuickStats/> */}
+      <QuickStats/>
       <QuickActions/>
       <RecentActivity/>
       <HealthTips />

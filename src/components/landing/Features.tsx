@@ -37,6 +37,7 @@ function Features() {
       aria-labelledby="how-it-works-title"
       itemScope
       itemType="https://schema.org/HowTo"
+      id="como-funciona"
     >
       <div className="container mx-auto px-4">
         <div className={`text-center mb-12 transition-all duration-1000 ease-out ${

@@ -8,7 +8,7 @@ import { CacheIndicator } from "./CacheIndicator";
 import { useMapDataCached } from "@/hooks/useMapDataCached";
 
 type MapFilterOptions = {
-  dateFilter: 'lastWeek' | 'lastMonth' | '3months' | '1year' | 'all';
+  dateFilter: 'lastWeek' | 'lastMonth' | '3months';
   riskLevel: 'all' | 'low' | 'medium' | 'high';
 };
 
@@ -80,7 +80,7 @@ export function MapContainer() {
     }
   }, []);
 
-  // Memoizar el top 5 de zonas ordenadas por casos
+  // Memoizar el top 10 de zonas ordenadas por casos
   const topZones = useMemo(() => {
     return zoneStats
       .map(stat => {
@@ -94,7 +94,7 @@ export function MapContainer() {
         };
       })
       .sort((a, b) => b.cases - a.cases) // Ordenar por casos descendente
-      .slice(0, 5); // Top 5
+      .slice(0, 10); // Top 10
   }, [zoneStats, getCircleProps]);
 
   // Memoizar las coordenadas del centro para evitar re-renders
@@ -135,7 +135,7 @@ export function MapContainer() {
 
             {/* Lista de Zonas */}
             <div className="space-y-3">
-              <h4 className="font-semibold text-gray-900">Top 5 Zonas por Nivel de Riesgo</h4>
+              <h4 className="font-semibold text-gray-900">Top 10 Zonas por Nivel de Riesgo</h4>
               <div className="space-y-2 max-h-96 overflow-y-auto">
                 {isLoading ? (
                   // Skeleton loading

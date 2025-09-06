@@ -35,6 +35,7 @@ function Hero() {
   return (
     <section
       ref={sectionRef}
+      id="inicio"
       className="py-12 md:py-20 bg-gradient-to-br from-background to-muted/30"
       aria-labelledby="hero-title"
       role="banner"
@@ -54,7 +55,8 @@ function Hero() {
             }`}
           >
             Protege a tu comunidad del{" "}
-            <span className="text-primary">dengue</span>
+            <span className="text-[var(--color-primary)]">dengue </span>
+            con Dengue Cero Tumbes
           </h1>
           <p
             className={`text-xl text-muted-foreground text-balance mb-8 leading-relaxed transition-all duration-1000 delay-400 ease-out ${
@@ -88,7 +90,7 @@ function Hero() {
             >
               <Link
                 className="text-white flex items-center justify-center gap-3 p-3"
-                href="/register"
+                href="/registrarse"
                 title="Comenzar autoevaluación de síntomas de dengue"
                 aria-label="Comenzar autoevaluación de síntomas de dengue"
               >

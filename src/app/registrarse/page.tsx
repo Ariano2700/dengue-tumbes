@@ -119,7 +119,7 @@ function RegisterPage() {
       const result = await completeProfile(formData);
 
       if (result.success) {
-        console.log("Registro completado:", result.data);
+        //console.log("Registro completado:", result.data);
         setSuccess(true);
 
         setTimeout(() => {

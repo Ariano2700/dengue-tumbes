@@ -226,7 +226,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(response, { status: 200 });
 
   } catch (error) {
-    console.error('Error fetching autoevaluations:', error);
+    //console.error('Error fetching autoevaluations:', error);
     
     return NextResponse.json(
       { 

@@ -25,7 +25,6 @@ export function useAuth() {
     dispatch(setLoading(status === "loading"));
 
     if (status === "authenticated" && session?.user && !user && !profileFetched) {
-      console.log("User authenticated, fetching full profile immediately...");
       dispatch(fetchUserProfile());
     } else if (status === "unauthenticated") {
       dispatch(logout());
