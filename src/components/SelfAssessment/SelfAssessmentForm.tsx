@@ -35,6 +35,7 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
   const [loadingSymptoms, setLoadingSymptoms] = useState(true)
   const [errorLoadingSymptoms, setErrorLoadingSymptoms] = useState<string | null>(null)
   const [location, setLocation] = useState<{ lat: number; lng: number; address?: string } | null>(null)
+  const [formErrors, setFormErrors] = useState<{ temperature?: string; daysSick?: string }>({});
 
   // Obtener síntomas de la API
   useEffect(() => {
@@ -94,9 +95,28 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
     setLocation({ lat, lng, address })
   }
 
+  const validateForm = () => {
+    const errors: { temperature?: string; daysSick?: string } = {};
+
+    if (!temperature) {
+      errors.temperature = "Por favor, ingresa tu temperatura actual.";
+    }
+
+    if (!daysSick) {
+      errors.daysSick = "Por favor, ingresa cuántos días te sientes mal.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     // Validar que se haya seleccionado una ubicación
     if (!location) {
       alert('Por favor, selecciona tu ubicación en el mapa antes de continuar.')
@@ -170,6 +190,9 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
+                {formErrors.temperature && (
+                  <p className="text-red-600 text-sm">{formErrors.temperature}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -184,6 +207,9 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
                   onChange={(e) => setDaysSick(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
+                {formErrors.daysSick && (
+                  <p className="text-red-600 text-sm">{formErrors.daysSick}</p>
+                )}
               </div>
             </div>
           </div>
@@ -251,6 +277,15 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
               onLocationSelect={handleLocationSelect}
               height="250px"
             />
+          </div>
+
+          <div className="space-y-4">
+            {formErrors.temperature && (
+              <p className="text-red-600 text-sm">{formErrors.temperature}</p>
+            )}
+            {formErrors.daysSick && (
+              <p className="text-red-600 text-sm">{formErrors.daysSick}</p>
+            )}
           </div>
 
           <div className="flex gap-3 pt-4">

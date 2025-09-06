@@ -21,6 +21,7 @@ import { logout } from "@/store/slices/authSlice";
 import { useState, useEffect } from "react";
 import { ModalUserProfile } from "./ModalUserProfile";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 type MenuItem = {
   title: string;
@@ -40,6 +41,7 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const pathname = usePathname();
 
   // Detectar si es mobile
   useEffect(() => {
@@ -61,25 +63,25 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
       title: "Panel Principal",
       icon: Activity,
       href: "/dashboard",
-      isActive: activeItem === "dashboard",
+      isActive: pathname === "/dashboard",
     },
     {
       title: "Autoevaluación",
       icon: ScrollText,
       href: "/dashboard/autoevaluacion",
-      isActive: activeItem === "autoevaluacion",
+      isActive: pathname === "/dashboard/autoevaluacion",
     },
     {
       title: "Historial",
       icon: History,
       href: "/dashboard/historial",
-      isActive: activeItem === "historial",
+      isActive: pathname === "/dashboard/historial",
     },
     {
       title: "Mapa de Casos",
       icon: MapPin,
       href: "/dashboard/mapa-de-casos",
-      isActive: activeItem === "mapa",
+      isActive: pathname === "/dashboard/mapa-de-casos",
     },
   ];
 
