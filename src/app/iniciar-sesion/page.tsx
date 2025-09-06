@@ -2,7 +2,7 @@
 import { GgGoogle } from "@/components/icons/GgGoogle";
 import { AlertCircle, ArrowLeft, Shield } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -175,4 +175,11 @@ function LoginPage() {
     </div>
   );
 }
-export default LoginPage;
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <LoginPage />
+    </Suspense>
+  );
+}

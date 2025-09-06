@@ -10,7 +10,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -419,4 +419,11 @@ function RegisterPage() {
     </div>
   );
 }
-export default RegisterPage;
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <RegisterPage />
+    </Suspense>
+  );
+}
