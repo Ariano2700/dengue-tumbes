@@ -1,5 +1,6 @@
 'use client';
 import { Shield } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 
@@ -15,11 +16,17 @@ function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined bg-[var(--color-primary)] p-2 rounded-lg">
-              <Shield className="size-8 text-white" />
-            </span>
+          <Image
+            src="/icono-dengue-cero.png"
+            alt="Dengue Cero Tumbes"
+            title="Dengue Cero Tumbes"
+            priority
+            className="size-16 rounded-2xl"
+            width={120}
+            height={120}
+          />
             <h2 className="text-xl font-bold text-gray-900">
-              DengueCero <br />
+              Dengue Cero <br />
               <p className="text-sm text-gray-400 font-light">
                 Sistema de Prevención de Dengue
               </p>{" "}

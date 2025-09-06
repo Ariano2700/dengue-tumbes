@@ -6,9 +6,15 @@ import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 function LoginPage() {
-  const { user, isAuthenticated, isLoading: authLoading, isInitialized } = useAuth();
+  const {
+    user,
+    isAuthenticated,
+    isLoading: authLoading,
+    isInitialized,
+  } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,15 +31,15 @@ function LoginPage() {
     //   user,
     //   profileCompleted: user?.profileCompleted,
     // });
-    
+
     if (!isInitialized || hasRedirected || authLoading) return;
 
     if (isAuthenticated && user) {
       // Verificar si viene con un callbackUrl específico
-      const callbackUrl = searchParams.get('callbackUrl');
-      
+      const callbackUrl = searchParams.get("callbackUrl");
+
       //console.log("User is authenticated, profileCompleted:", user.profileCompleted);
-      
+
       setHasRedirected(true);
       if (user.profileCompleted) {
         // Si tiene perfil completo, ir al destino solicitado o dashboard
@@ -45,7 +51,15 @@ function LoginPage() {
         router.push("/registrarse?step=2");
       }
     }
-  }, [isAuthenticated, user, router, searchParams, isInitialized, hasRedirected, authLoading]);
+  }, [
+    isAuthenticated,
+    user,
+    router,
+    searchParams,
+    isInitialized,
+    hasRedirected,
+    authLoading,
+  ]);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
@@ -59,13 +73,17 @@ function LoginPage() {
       });
 
       if (result?.error) {
-        setError("Error al iniciar sesión con Google. Por favor, intenta nuevamente.");
+        setError(
+          "Error al iniciar sesión con Google. Por favor, intenta nuevamente."
+        );
       } else {
         // La autenticación fue exitosa
         // El useEffect se encargará de redirigir según el estado del usuario
       }
     } catch (err) {
-      setError("Error al iniciar sesión con Google. Por favor, intenta nuevamente.");
+      setError(
+        "Error al iniciar sesión con Google. Por favor, intenta nuevamente."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -83,20 +101,28 @@ function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-[var(--color-primary)] rounded-full flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
-          </div>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Image
+            src="/logo-dengue-cero.png"
+            alt="Dengue Cero Tumbes"
+            title="Dengue Cero Tumbes"
+            priority
+            className="size-28 rounded-2xl mb-5"
+            width={120}
+            height={120}
+          />
           <h1 className="text-2xl font-bold text-foreground">
             Dengue Cero Tumbes
           </h1>
-          <p className="text-muted-foreground">Inicia sesión en tu cuenta</p>
+          <p className="text-muted-foreground mb-2">Inicia sesión en tu cuenta</p>
         </div>
 
         <div className="border p-10 rounded-xl border-gray-300">
           <div className="text-center">
             <h2 className="text-lg font-semibold mb-1">Iniciar Sesión</h2>
-            <p className="text-sm text-gray-500 mb-3">Accede a tu panel de autoevaluación de síntomas</p>
+            <p className="text-sm text-gray-500 mb-3">
+              Accede a tu panel de autoevaluación de síntomas
+            </p>
           </div>
           <div>
             {error && (

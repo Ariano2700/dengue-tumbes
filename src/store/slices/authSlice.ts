@@ -136,6 +136,8 @@ const authSlice = createSlice({
           lastName: action.payload.lastName,
           dni: action.payload.dni,
           phone: action.payload.phone,
+          createdAt: action.payload.createdAt,
+          updatedAt: action.payload.updatedAt,
           profileCompleted: action.payload.profileCompleted || false
         };
         state.isAuthenticated = true;

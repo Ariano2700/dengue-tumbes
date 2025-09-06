@@ -36,11 +36,19 @@ function Hero() {
     <section
       ref={sectionRef}
       id="inicio"
-      className="py-12 md:py-20 bg-gradient-to-br from-background to-muted/30"
+      className="py-12 md:py-20 bg-gradient-to-br from-background to-muted/30 relative"
       aria-labelledby="hero-title"
       role="banner"
     >
-      <div className="container mx-auto px-4 text-center">
+      {/* Imagen de fondo con overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/bg-hero.png')" }}
+        aria-hidden="true"
+      ></div>
+      <div className="absolute inset-0 bg-black/70" aria-hidden="true"></div>
+
+      <div className="container mx-auto px-4 text-center relative z-10">
         <div
           className={`max-w-3xl mx-auto transition-all duration-1000 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -48,7 +56,7 @@ function Hero() {
         >
           <h1
             id="hero-title"
-            className={`text-4xl md:text-6xl font-bold text-balance mb-6 transition-all duration-1000 delay-200 ease-out ${
+            className={`text-white text-4xl md:text-6xl font-bold text-balance mb-6 transition-all duration-1000 delay-200 ease-out ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
@@ -59,7 +67,7 @@ function Hero() {
             con Dengue Cero Tumbes
           </h1>
           <p
-            className={`text-xl text-muted-foreground text-balance mb-8 leading-relaxed transition-all duration-1000 delay-400 ease-out ${
+            className={`text-xl text-gray-300 text-balance mb-8 leading-relaxed transition-all duration-1000 delay-400 ease-out ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"

@@ -1,21 +1,21 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { 
-  logout, 
-  setLoading, 
-  selectUser, 
+import {
+  logout,
+  setLoading,
+  selectUser,
   selectAuthLoading,
   selectProfileFetched,
   fetchUserProfile,
-  completeUserProfile
+  completeUserProfile,
 } from "@/store/slices/authSlice";
 
 export function useAuth() {
   const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
   const [isInitialized, setIsInitialized] = useState(false);
-  
+
   const user = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectAuthLoading);
   const profileFetched = useAppSelector(selectProfileFetched);
@@ -24,7 +24,12 @@ export function useAuth() {
   useEffect(() => {
     dispatch(setLoading(status === "loading"));
 
-    if (status === "authenticated" && session?.user && !user && !profileFetched) {
+    if (
+      status === "authenticated" &&
+      session?.user &&
+      !user &&
+      !profileFetched
+    ) {
       dispatch(fetchUserProfile());
     } else if (status === "unauthenticated") {
       dispatch(logout());
@@ -34,8 +39,6 @@ export function useAuth() {
       setIsInitialized(true);
     }
   }, [session?.user?.id, status, dispatch, user, profileFetched]);
-
-
 
   const completeProfile = async (profileData: {
     firstName: string;
@@ -68,6 +71,6 @@ export function useAuth() {
     session,
     completeProfile,
     refreshProfile,
-    isInitialized
+    isInitialized,
   };
 }

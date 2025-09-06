@@ -3,6 +3,7 @@
 import { Menu, Shield, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,10 +16,16 @@ function Header() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined bg-[var(--color-primary)] p-2 rounded-lg">
-            <Shield className="size-8 text-white" />
-          </span>
-          <h2 className="text-xl font-bold text-gray-900">
+          <Image
+            src="/logo-dengue-cero.png"
+            alt="Dengue Cero Tumbes"
+            title="Dengue Cero Tumbes"
+            priority
+            className="size-16 rounded-3xl"
+            width={120}
+            height={120}
+          />
+          <h2 className="sr-only text-xl font-bold text-gray-900">
             Dengue Cero <br />
             <span className="text-sm text-gray-400 font-light">Tumbes</span>
           </h2>

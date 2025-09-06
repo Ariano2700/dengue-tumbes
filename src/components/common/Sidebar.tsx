@@ -1,6 +1,18 @@
 "use client";
 
-import { Activity, History, MapPin, Shield, User, LogOut, ScrollText, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Activity,
+  History,
+  MapPin,
+  Shield,
+  User,
+  LogOut,
+  ScrollText,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { signOut } from "next-auth/react";
@@ -8,6 +20,7 @@ import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/slices/authSlice";
 import { useState, useEffect } from "react";
 import { ModalUserProfile } from "./ModalUserProfile";
+import Image from "next/image";
 
 type MenuItem = {
   title: string;
@@ -27,7 +40,7 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  
+
   // Detectar si es mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -38,9 +51,9 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const menuItems: MenuItem[] = [
@@ -75,7 +88,7 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
       dispatch(logout());
       await signOut({
         redirect: true,
-        callbackUrl: "/"
+        callbackUrl: "/",
       });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -92,7 +105,7 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
             <div className="animate-spin w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full"></div>
           </div>
         </div>
-        
+
         {/* Mobile Loading */}
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
           <div className="flex items-center justify-center">
@@ -103,9 +116,10 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
     );
   }
 
-  const displayName = user.firstName && user.lastName 
-    ? `${user.firstName} ${user.lastName}`
-    : user.name || "Usuario";
+  const displayName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.name || "Usuario";
   const displayEmail = user.email || "Sin email";
 
   // Mobile Bottom Navigation
@@ -128,11 +142,19 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
               <div className="border-b border-gray-200 p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[var(--color-primary)] rounded-lg flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-white" />
-                    </div>
+                    <Image
+                      src="/icono-dengue-cero.png"
+                      alt="Dengue Cero Tumbes"
+                      title="Dengue Cero Tumbes"
+                      priority
+                      className="size-16 rounded-2xl"
+                      width={120}
+                      height={120}
+                    />
                     <div>
-                      <h2 className="font-semibold text-gray-900">Dengue Cero</h2>
+                      <h2 className="font-semibold text-gray-900">
+                        Dengue Cero
+                      </h2>
                       <p className="text-xs text-gray-500">Tumbes</p>
                     </div>
                   </div>
@@ -161,8 +183,12 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">{displayName}</p>
-                    <p className="text-xs text-gray-500 truncate">{displayEmail}</p>
+                    <p className="font-medium text-gray-900 truncate">
+                      {displayName}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {displayEmail}
+                    </p>
                     {!user.profileCompleted && (
                       <Link
                         href="/registrarse?step=2"
@@ -211,7 +237,9 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
                     className="flex items-center gap-3 px-3 py-3 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-red-600 transition-colors w-full text-left group"
                   >
                     <LogOut className="w-5 h-5 group-hover:text-red-600" />
-                    <span className="group-hover:text-red-600">Cerrar Sesión</span>
+                    <span className="group-hover:text-red-600">
+                      Cerrar Sesión
+                    </span>
                   </button>
                 </div>
               </div>
@@ -252,18 +280,28 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
 
   // Desktop/Tablet Sidebar
   return (
-    <div className={`hidden md:flex h-screen flex-col bg-white border-r border-gray-200 transition-all duration-300 ${
-      isCollapsed ? 'w-16' : 'w-64'
-    }`}>
+    <div
+      className={`hidden md:flex h-screen flex-col bg-white border-r border-gray-200 transition-all duration-300 ${
+        isCollapsed ? "w-20" : "w-64"
+      }`}
+    >
       {/* Header */}
       <div className="border-b border-gray-200 p-4">
         <div className="flex items-center justify-between">
-          <div className={`flex items-center gap-3 transition-opacity duration-300 ${
-            isCollapsed ? 'opacity-0' : 'opacity-100'
-          }`}>
-            <div className="w-8 h-8 bg-[var(--color-primary)] rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
+          <div
+            className={`flex items-center gap-3 transition-opacity duration-300 ${
+              isCollapsed ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <Image
+              src="/icono-dengue-cero.png"
+              alt="Dengue Cero Tumbes"
+              title="Dengue Cero Tumbes"
+              priority
+              className="size-16 rounded-2xl"
+              width={120}
+              height={120}
+            />
             {!isCollapsed && (
               <div>
                 <h2 className="font-semibold text-gray-900">Dengue Cero</h2>
@@ -301,10 +339,16 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate" title={displayName}>
+              <p
+                className="font-medium text-gray-900 truncate"
+                title={displayName}
+              >
                 {displayName}
               </p>
-              <p className="text-xs text-gray-500 truncate" title={displayEmail}>
+              <p
+                className="text-xs text-gray-500 truncate"
+                title={displayEmail}
+              >
                 {displayEmail}
               </p>
 
@@ -327,11 +371,14 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
               <img
                 src={user.picture}
                 alt={displayName}
-                className="w-10 h-10 rounded-full object-cover"
+                className="w-10 h-10 rounded-full object-contain"
                 title={displayName}
               />
             ) : (
-                <div className="w-10 h-10 bg-[var(--color-primary)] rounded-full flex items-center justify-center" title={displayName}>
+              <div
+                className="w-10 h-10 bg-[var(--color-primary)] rounded-full flex items-center justify-center"
+                title={displayName}
+              >
                 <User className="w-5 h-5 text-white" />
               </div>
             )}
@@ -344,14 +391,18 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-3'} py-2 text-sm font-medium rounded-md transition-colors duration-200 group ${
+              className={`flex items-center ${
+                isCollapsed ? "justify-center px-3" : "gap-3 px-3"
+              } py-2 text-sm font-medium rounded-md transition-colors duration-200 group ${
                 item.isActive
                   ? "bg-[var(--color-primary)]/20 text-[var(--color-primary)] border border-[var(--color-primary)]/40"
                   : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               }`}
               title={isCollapsed ? item.title : undefined}
             >
-              <item.icon className="w-4 h-4" />
+              <item.icon
+                className={`w-4 h-4 ${isCollapsed ? "w-8 h-8" : ""}`}
+              />
               {!isCollapsed && <span>{item.title}</span>}
             </Link>
           ))}
@@ -363,7 +414,9 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
         <nav className="space-y-1">
           <button
             onClick={() => setIsProfileModalOpen(true)}
-            className={`flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-3'} py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 w-full text-left`}
+            className={`flex items-center ${
+              isCollapsed ? "justify-center px-3" : "gap-3 px-3"
+            } py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 w-full text-left`}
             title={isCollapsed ? "Mi Perfil" : undefined}
           >
             <User className="w-4 h-4" />
@@ -371,11 +424,15 @@ function Sidebar({ activeItem }: DashboardSidebarProps) {
           </button>
           <button
             onClick={handleLogout}
-            className={`flex items-center ${isCollapsed ? 'justify-center px-3' : 'gap-3 px-3'} py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-red-600 transition-colors duration-200 w-full text-left group cursor-pointer`}
+            className={`flex items-center ${
+              isCollapsed ? "justify-center px-3" : "gap-3 px-3"
+            } py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-red-600 transition-colors duration-200 w-full text-left group cursor-pointer`}
             title={isCollapsed ? "Cerrar Sesión" : undefined}
           >
             <LogOut className="w-4 h-4 group-hover:text-red-600" />
-            {!isCollapsed && <span className="group-hover:text-red-600">Cerrar Sesión</span>}
+            {!isCollapsed && (
+              <span className="group-hover:text-red-600">Cerrar Sesión</span>
+            )}
           </button>
         </nav>
       </div>
