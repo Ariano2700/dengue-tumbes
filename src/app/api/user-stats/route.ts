@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import { getDaysAgoInPeru, getStartOfMonthInPeru } from '@/utils/dateUtils';
+import { authOptions } from '../auth/[...nextauth]/authOptions';
 
 export async function GET(request: NextRequest) {
   try {
