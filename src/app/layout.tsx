@@ -162,6 +162,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
+        <meta name="google-site-verification" content="NsocUWuqPhJ85ua37XYdXz8-v5la9LMFxfQjQml72wM" />
 
         {/* Performance hints */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
