@@ -32,9 +32,9 @@ function Footer() {
               </p>{" "}
             </h2>
           </div>
-          <div className="flex items-center gap-6 text-sm text-gray-400">
+          <div className="flex flex-col md:flex-row items-center gap-6 text-sm text-gray-400">
             <Link
-              href="/about"
+              href="/acerca-de"
               aria-label="Ir a la sección de acerca de"
               title="Ir a la sección de acerca de"
               className="hover:text-foreground transition-colors"
@@ -42,13 +42,22 @@ function Footer() {
               Acerca de
             </Link>
             <Link
-              href="/privacy"
+              href="/privacidad"
               aria-label="Ir a la sección de privacidad"
               title="Ir a la sección de privacidad"
               className="hover:text-foreground transition-colors"
             >
               Privacidad
             </Link>
+            <Link
+              href="mailto:denguecerotumbes@gmail.com"
+              aria-label="Enviar un correo a Dengue Cero Tumbes"
+              title="Enviar un correo a Dengue Cero Tumbes"
+              className="hover:text-foreground transition-colors"
+            >
+              Contacto
+            </Link>
+            <span className="text-gray-400">denguecerotumbes@gmail.com</span>
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-gray-200 text-center text-sm text-gray-400">
