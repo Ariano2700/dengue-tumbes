@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { organizationSchema } from '@/lib/structured-data'
 
 interface SEOProps {
   title?: string
@@ -75,7 +74,6 @@ const SEOHead: React.FC<SEOProps> = ({
       })) || []
     } : undefined,
     "lastReviewed": healthContent.lastReviewed || new Date().toISOString(),
-    "reviewedBy": organizationSchema,
     "medicalAudience": [
       {
         "@type": "PatientsAudience",
