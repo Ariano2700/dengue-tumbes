@@ -16,13 +16,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 function RegisterPage() {
-  const { user, isAuthenticated, isLoading: authLoading, session, completeProfile } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, session, completeProfile, isInitialized } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0); // 0: Google auth, 1: Personal data
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -34,23 +35,26 @@ function RegisterPage() {
   // Verificar si viene con step=2 en la URL
   useEffect(() => {
     const step = searchParams.get('step');
-    if (step === '2' && isAuthenticated) {
+    if (step === '2' && isAuthenticated && isInitialized) {
       setCurrentStep(1); // Ir directamente al paso 2 (completar perfil)
     }
-  }, [searchParams, isAuthenticated]);
+  }, [searchParams, isAuthenticated, isInitialized]);
 
   // Si el usuario ya está autenticado, manejar redirección
   useEffect(() => {
+    if (!isInitialized || hasRedirected || authLoading) return;
+
     if (isAuthenticated && user) {
       if (user.profileCompleted) {
         // Si ya tiene el perfil completo, redirigir al dashboard
+        setHasRedirected(true);
         router.push("/dashboard");
       } else {
         // Si no tiene perfil completo, ir al paso 2 para completar
         setCurrentStep(1);
       }
     }
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, router, isInitialized, hasRedirected, authLoading]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -154,6 +158,15 @@ function RegisterPage() {
     );
   }
 
+  // Mostrar loading si está verificando autenticación o redirigiendo
+  if (authLoading || hasRedirected) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -187,7 +200,7 @@ function RegisterPage() {
               </h3>
             </div>
             {currentStep === 1 && (
-              <div className="flex items-center justify-center mt-4 space-x-2">
+              <div className="flex items-center justify-center mt-4 mb-4 space-x-2">
                 <div className="w-8 h-8 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white text-sm font-medium">
                   <Check />
                 </div>
@@ -264,7 +277,7 @@ function RegisterPage() {
                   className="space-y-4"
                 >
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2 border-b border-gray-200">
+                    <div className="space-y-2 border-b border-gray-200 relative">
                       <label htmlFor="firstName">Nombres *</label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -276,13 +289,13 @@ function RegisterPage() {
                           onChange={(e) =>
                             handleInputChange("firstName", e.target.value)
                           }
-                          className="pl-10"
+                          className="pl-10 focus:outline-none"
                           required
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-2 border-b border-gray-200">
+                    <div className="space-y-2 border-b border-gray-200 relative">
                       <label htmlFor="lastName">Apellidos *</label>
                       <input
                         id="lastName"
@@ -292,12 +305,13 @@ function RegisterPage() {
                         onChange={(e) =>
                           handleInputChange("lastName", e.target.value)
                         }
+                        className="focus:outline-none"
                         required
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2 border-b border-gray-200">
+                  <div className="space-y-2 border-b border-gray-200 relative">
                     <label htmlFor="dni">DNI *</label>
                     <div className="relative">
                       <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -312,7 +326,7 @@ function RegisterPage() {
                             e.target.value.replace(/\D/g, "").slice(0, 8)
                           )
                         }
-                        className="pl-10"
+                        className="pl-10 focus:outline-none"
                         maxLength={8}
                         required
                       />
@@ -322,7 +336,7 @@ function RegisterPage() {
                     Documento Nacional de Identidad (8 dígitos)
                   </p>
 
-                  <div className="space-y-2 border-b border-gray-200">
+                  <div className="space-y-2 border-b border-gray-200 relative">
                     <label htmlFor="phone">Teléfono *</label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -337,7 +351,7 @@ function RegisterPage() {
                             e.target.value.replace(/\D/g, "").slice(0, 9)
                           )
                         }
-                        className="pl-10"
+                        className="pl-10 focus:outline-none"
                         maxLength={9}
                         required
                       />

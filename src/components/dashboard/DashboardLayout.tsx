@@ -34,13 +34,15 @@ function DashboardLayout({
   return (
     <div className="flex h-screen w-full overflow-hidden">
       <Sidebar activeItem={activeItem} />
-      <div className="flex flex-col flex-1 min-w-0">
+      
+      {/* Main content area */}
+      <div className="flex flex-col flex-1 min-w-0 md:min-w-0">
         <DashboardHeader
           title={title}
           description={description}
           showHealthBadge={showHealthBadge}
         />
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto pb-20 md:pb-6">
           <div className="space-y-6">{children}</div>
         </main>
       </div>

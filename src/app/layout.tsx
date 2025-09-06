@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 import { ReduxProvider } from "@/components/providers/ReduxProvider";
-import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,10 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación de Dengue",
-    template: "%s | Dengue Cero Tumbes"
+    default:
+      "Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación de Dengue",
+    template: "%s | Dengue Cero Tumbes",
   },
-  description: "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú. Protege a tu comunidad del dengue con herramientas digitales del MINSA.",
+  description:
+    "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú. Protege a tu comunidad del dengue con herramientas digitales del MINSA.",
   keywords: [
     "dengue",
     "prevención dengue",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     "epidemiología",
     "monitoreo casos dengue",
     "sistema salud",
-    "prevención enfermedades vectoriales"
+    "prevención enfermedades vectoriales",
   ],
   authors: [{ name: "MINSA Tumbes" }, { name: "Dengue Cero Team" }],
   creator: "Sistema de Salud Pública Tumbes",
@@ -45,43 +46,48 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'https://dengue-tumbes.vercel.app'),
+  metadataBase: new URL(
+    process.env.NEXTAUTH_URL || "https://dengue-tumbes.vercel.app"
+  ),
   alternates: {
-    canonical: '/',
+    canonical: "/",
     languages: {
-      'es-PE': '/',
-      'es': '/',
+      "es-PE": "/",
+      es: "/",
     },
   },
   openGraph: {
-    type: 'website',
-    locale: 'es_PE',
-    url: '/',
-    title: 'Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación de Dengue',
-    description: 'Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú.',
-    siteName: 'Dengue Cero Tumbes',
+    type: "website",
+    locale: "es_PE",
+    url: "/",
+    title:
+      "Dengue Cero Tumbes | Sistema de Prevención y Autoevaluación de Dengue",
+    description:
+      "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú.",
+    siteName: "Dengue Cero Tumbes",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: 'Dengue Cero Tumbes - Sistema de Prevención del Dengue',
+        alt: "Dengue Cero Tumbes - Sistema de Prevención del Dengue",
       },
       {
-        url: '/og-image-square.jpg',
+        url: "/og-image-square.jpg",
         width: 800,
         height: 800,
-        alt: 'Dengue Cero Tumbes - Prevención del Dengue en Tumbes, Perú',
+        alt: "Dengue Cero Tumbes - Prevención del Dengue en Tumbes, Perú",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Dengue Cero Tumbes | Sistema de Prevención del Dengue',
-    description: 'Protege a tu comunidad del dengue con autoevaluación de síntomas y herramientas de prevención. Sistema oficial del MINSA para Tumbes, Perú.',
-    images: ['/twitter-image.jpg'],
-    creator: '@MinsaPeru',
-    site: '@DengueCeroTumbes',
+    card: "summary_large_image",
+    title: "Dengue Cero Tumbes | Sistema de Prevención del Dengue",
+    description:
+      "Protege a tu comunidad del dengue con autoevaluación de síntomas y herramientas de prevención. Sistema oficial del MINSA para Tumbes, Perú.",
+    images: ["/twitter-image.jpg"],
+    creator: "@MinsaPeru",
+    site: "@DengueCeroTumbes",
   },
   robots: {
     index: true,
@@ -91,30 +97,30 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
     google: process.env.GOOGLE_VERIFICATION_ID,
     yandex: process.env.YANDEX_VERIFICATION_ID,
     other: {
-      'msvalidate.01': process.env.BING_VERIFICATION_ID || '',
+      "msvalidate.01": process.env.BING_VERIFICATION_ID || "",
     },
   },
-  category: 'health',
-  classification: 'Public Health System',
+  category: "health",
+  classification: "Public Health System",
   other: {
-    'theme-color': '#2563eb',
-    'color-scheme': 'light',
-    'mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'default',
-    'apple-mobile-web-app-title': 'Dengue Cero',
-    'application-name': 'Dengue Cero Tumbes',
-    'msapplication-TileColor': '#2563eb',
-    'msapplication-config': '/browserconfig.xml',
+    "theme-color": "#2563eb",
+    "color-scheme": "light",
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+    "apple-mobile-web-app-title": "Dengue Cero",
+    "application-name": "Dengue Cero Tumbes",
+    "msapplication-TileColor": "#2563eb",
+    "msapplication-config": "/browserconfig.xml",
   },
 };
 
@@ -123,8 +129,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const GA_TRACKING_ID = process.env.GOOGLE_ANALYTICS_ID;
-
   return (
     <html lang="es" dir="ltr">
       <head>
@@ -132,81 +136,82 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5"
+        />
+
         {/* Performance hints */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        
+
         {/* Critical CSS for above-the-fold content */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
             /* Critical CSS for initial page load */
             body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
             .loading { display: flex; justify-content: center; align-items: center; height: 100vh; }
-          `
-        }} />
-        
+          `,
+          }}
+        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "Dengue Cero Tumbes",
-              "url": "https://dengue-tumbes.vercel.app",
-              "description": "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú.",
-              "applicationCategory": "HealthApplication",
-              "operatingSystem": "Web Browser",
-              "offers": {
+              name: "Dengue Cero Tumbes",
+              url: "https://dengue-tumbes.vercel.app",
+              description:
+                "Sistema web oficial para prevención, autoevaluación de síntomas y monitoreo de casos de dengue en la región Tumbes, Perú.",
+              applicationCategory: "HealthApplication",
+              operatingSystem: "Web Browser",
+              offers: {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "PEN"
+                price: "0",
+                priceCurrency: "PEN",
               },
-              "publisher": {
+              publisher: {
                 "@type": "Organization",
-                "name": "MINSA - Ministerio de Salud del Perú",
-                "url": "https://www.gob.pe/minsa"
+                name: "MINSA - Ministerio de Salud del Perú",
+                url: "https://www.gob.pe/minsa",
               },
-              "author": {
+              author: {
                 "@type": "Organization",
-                "name": "Sistema de Salud Pública Tumbes"
+                name: "Sistema de Salud Pública Tumbes",
               },
-              "inLanguage": "es-PE",
-              "availableLanguage": ["es", "es-PE"],
-              "featureList": [
+              inLanguage: "es-PE",
+              availableLanguage: ["es", "es-PE"],
+              featureList: [
                 "Autoevaluación de síntomas de dengue",
                 "Mapa de casos y zonas de riesgo",
                 "Información de prevención",
                 "Monitoreo epidemiológico",
-                "Contacto con servicios de salud"
+                "Contacto con servicios de salud",
               ],
-              "screenshot": "https://dengue-tumbes.vercel.app/screenshot.jpg",
-              "aggregateRating": {
+              screenshot: "https://dengue-tumbes.vercel.app/screenshot.jpg",
+              aggregateRating: {
                 "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "reviewCount": "120"
+                ratingValue: "4.8",
+                reviewCount: "120",
               },
-              "potentialAction": {
+              potentialAction: {
                 "@type": "UseAction",
-                "target": "https://dengue-tumbes.vercel.app/registrarse",
-                "name": "Comenzar Autoevaluación"
-              }
-            })
+                target: "https://dengue-tumbes.vercel.app/registrarse",
+                name: "Comenzar Autoevaluación",
+              },
+            }),
           }}
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--background)]`}
       >
-        {/* Google Analytics */}
-        <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} />
-        
         <ReduxProvider>
-          <NextAuthProvider>
-            {children}
-          </NextAuthProvider>
+          <NextAuthProvider>{children}</NextAuthProvider>
         </ReduxProvider>
       </body>
     </html>

@@ -1,15 +1,20 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 
-interface GoogleAnalyticsProps {
-  GA_TRACKING_ID?: string
-}
+const GoogleAnalytics: React.FC = () => {
+  const [isMounted, setIsMounted] = useState(false)
+  const [GA_TRACKING_ID, setGA_TRACKING_ID] = useState<string | undefined>()
 
-const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ GA_TRACKING_ID }) => {
   useEffect(() => {
-    if (typeof window !== 'undefined' && GA_TRACKING_ID) {
+    setIsMounted(true)
+    // Get the tracking ID from environment variables on the client side
+    setGA_TRACKING_ID(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID)
+  }, [])
+
+  useEffect(() => {
+    if (isMounted && typeof window !== 'undefined' && GA_TRACKING_ID) {
       // Track page views
       window.gtag = window.gtag || function() {
         (window.dataLayer = window.dataLayer || []).push(arguments)
@@ -27,7 +32,7 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ GA_TRACKING_ID }) => 
         }
       })
     }
-  }, [GA_TRACKING_ID])
+  }, [GA_TRACKING_ID, isMounted])
 
   // Track health-related events
   const trackHealthEvent = (eventName: string, parameters: Record<string, any>) => {
@@ -52,7 +57,7 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ GA_TRACKING_ID }) => 
     }
   }
 
-  if (!GA_TRACKING_ID) return null
+  if (!GA_TRACKING_ID || !isMounted) return null
 
   return (
     <>
@@ -69,8 +74,6 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ GA_TRACKING_ID }) => 
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_TRACKING_ID}', {
-              page_title: document.title,
-              page_location: window.location.href,
               anonymize_ip: true,
               allow_google_signals: false,
               allow_ad_personalization_signals: false
@@ -78,9 +81,7 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ GA_TRACKING_ID }) => 
             
             // Custom health tracking events
             gtag('event', 'page_view', {
-              event_category: 'health_system',
-              page_title: document.title,
-              page_location: window.location.href
+              event_category: 'health_system'
             });
           `
         }}

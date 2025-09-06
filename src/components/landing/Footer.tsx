@@ -1,8 +1,15 @@
+'use client';
 import { Shield } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from 'react';
 
 function Footer() {
-  const year = new Date().getFullYear();
+  const [year, setYear] = useState<number | null>(null);
+  
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+  
   return (
     <footer className="py-8">
       <div className="container mx-auto px-4">
@@ -40,8 +47,8 @@ function Footer() {
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-gray-200 text-center text-sm text-gray-400">
-          <p >
-            © {year} Dengue Cero Tumbes. Desarrollado para la prevención del
+          <p>
+            © {year || '2025'} Dengue Cero Tumbes. Desarrollado para la prevención del
             dengue en la región Tumbes, Perú.
           </p>
         </div>

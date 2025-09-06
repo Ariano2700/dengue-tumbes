@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect, ReactNode } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, ReactNode, useState } from "react";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -15,23 +15,27 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { isAuthenticated, user, isLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        // Si no está autenticado, redirigir a login con la URL actual como callback
-        const currentPath = window.location.pathname;
-        router.push(`/iniciar-sesion?callbackUrl=${encodeURIComponent(currentPath)}`);
-        return;
-      }
+    // Evitar múltiples redirecciones
+    if (hasRedirected || isLoading) return;
 
-      if (requireProfileCompleted && user && !user.profileCompleted) {
-        // Si requiere perfil completo y no lo tiene, redirigir a completar perfil (paso 2)
-        router.push("/registrarse?step=2");
-        return;
-      }
+    if (!isAuthenticated) {
+      // Si no está autenticado, redirigir a login con la URL actual como callback
+      setHasRedirected(true);
+      router.push(`/iniciar-sesion?callbackUrl=${encodeURIComponent(pathname)}`);
+      return;
     }
-  }, [isAuthenticated, user, isLoading, requireProfileCompleted, router]);
+
+    if (requireProfileCompleted && user && !user.profileCompleted) {
+      // Si requiere perfil completo y no lo tiene, redirigir a completar perfil (paso 2)
+      setHasRedirected(true);
+      router.push("/registrarse?step=2");
+      return;
+    }
+  }, [isAuthenticated, user, isLoading, requireProfileCompleted, router, pathname, hasRedirected]);
 
   // Mostrar loading mientras verifica autenticación
   if (isLoading) {

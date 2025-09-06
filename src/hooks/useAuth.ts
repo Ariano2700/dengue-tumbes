@@ -1,36 +1,42 @@
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setUser, logout, setLoading, selectUser } from "@/store/slices/authSlice";
+import { 
+  logout, 
+  setLoading, 
+  selectUser, 
+  selectAuthLoading,
+  selectProfileFetched,
+  fetchUserProfile,
+  completeUserProfile
+} from "@/store/slices/authSlice";
 
 export function useAuth() {
   const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
+  const [isInitialized, setIsInitialized] = useState(false);
+  
   const user = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectAuthLoading);
+  const profileFetched = useAppSelector(selectProfileFetched);
 
-  // Sincronizar NextAuth session con Redux
+  // Manejar autenticación básica
   useEffect(() => {
     dispatch(setLoading(status === "loading"));
 
-    if (status === "authenticated" && session?.user) {
-      // Obtener datos completos del perfil del usuario
-      fetchUserProfile();
+    if (status === "authenticated" && session?.user && !user && !profileFetched) {
+      console.log("User authenticated, fetching full profile immediately...");
+      dispatch(fetchUserProfile());
     } else if (status === "unauthenticated") {
       dispatch(logout());
     }
-  }, [session, status, dispatch]);
 
-  const fetchUserProfile = async () => {
-    try {
-      const response = await fetch("/api/profile");
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(setUser(data.user));
-      }
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
+    if (status !== "loading") {
+      setIsInitialized(true);
     }
-  };
+  }, [session?.user?.id, status, dispatch, user, profileFetched]);
+
+
 
   const completeProfile = async (profileData: {
     firstName: string;
@@ -39,37 +45,30 @@ export function useAuth() {
     phone: string;
   }) => {
     try {
-      dispatch(setLoading(true));
-      
-      const response = await fetch("/api/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(setUser(data.user));
-        return { success: true, data: data.user };
-      } else {
-        const errorData = await response.json();
-        return { success: false, error: errorData.error };
-      }
+      const result = await dispatch(completeUserProfile(profileData)).unwrap();
+      return { success: true, data: result };
     } catch (error) {
-      return { success: false, error: "Error de conexión" };
-    } finally {
-      dispatch(setLoading(false));
+      return { success: false, error: error as string };
+    }
+  };
+
+  const refreshProfile = async () => {
+    if (status === "authenticated" && session?.user) {
+      try {
+        await dispatch(fetchUserProfile()).unwrap();
+      } catch (error) {
+        console.error("Error refreshing profile:", error);
+      }
     }
   };
 
   return {
     user,
-    isAuthenticated: !!session && !!user,
-    isLoading: status === "loading",
+    isAuthenticated: status === "authenticated" && !!session,
+    isLoading: status === "loading" || isLoading || !isInitialized,
     session,
     completeProfile,
-    fetchUserProfile,
+    refreshProfile,
+    isInitialized
   };
 }

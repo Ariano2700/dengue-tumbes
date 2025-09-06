@@ -8,27 +8,44 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 function LoginPage() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, isInitialized } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   // Si el usuario ya está autenticado, redirigir según su estado
   useEffect(() => {
+    console.log("Login page useEffect:", {
+      isInitialized,
+      hasRedirected,
+      authLoading,
+      isAuthenticated,
+      user,
+      profileCompleted: user?.profileCompleted,
+    });
+    
+    if (!isInitialized || hasRedirected || authLoading) return;
+
     if (isAuthenticated && user) {
       // Verificar si viene con un callbackUrl específico
       const callbackUrl = searchParams.get('callbackUrl');
       
+      console.log("User is authenticated, profileCompleted:", user.profileCompleted);
+      
+      setHasRedirected(true);
       if (user.profileCompleted) {
         // Si tiene perfil completo, ir al destino solicitado o dashboard
+        console.log("Redirecting to dashboard/callback");
         router.push(callbackUrl || "/dashboard");
       } else {
         // Si no tiene perfil completo, ir a completar registro (paso 2)
+        console.log("Redirecting to complete profile");
         router.push("/registrarse?step=2");
       }
     }
-  }, [isAuthenticated, user, router, searchParams]);
+  }, [isAuthenticated, user, router, searchParams, isInitialized, hasRedirected, authLoading]);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
@@ -55,8 +72,8 @@ function LoginPage() {
     }
   };
 
-  // Mostrar loading si está verificando autenticación
-  if (authLoading) {
+  // Mostrar loading si está verificando autenticación o redirigiendo
+  if (authLoading || hasRedirected) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full"></div>
