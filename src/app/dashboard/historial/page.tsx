@@ -83,8 +83,8 @@ function getRiskRecommendations(riskLevel: string): string[] {
   const baseRecommendations = [
     'Mantente bien hidratado bebiendo abundante agua',
     'Descansa y evita actividades físicas intensas',
-    'Usa repelente de mosquitos',
-    'Elimina recipientes con agua estancada'
+    'Usa repelente de mosquitos y mosquiteros',
+    'Eliminar inservibles'
   ];
 
   switch (riskLevel) {

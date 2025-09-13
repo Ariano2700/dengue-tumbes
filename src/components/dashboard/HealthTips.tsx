@@ -15,7 +15,7 @@ function HealthTips() {
           <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
             <Shield className="w-5 h-5 text-green-600 mt-0.5" />
             <div>
-              <h4 className="font-medium text-green-700">Elimina agua estancada</h4>
+              <h4 className="font-medium text-green-700">Elimina inservibles</h4>
               <p className="text-sm text-gray-600">Revisa recipientes, macetas y canaletas regularmente</p>
             </div>
           </div>

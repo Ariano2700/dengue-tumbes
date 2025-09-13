@@ -44,7 +44,7 @@ export function PublicGoogleMapComponent({
       strokeColor,
       strokeOpacity: 0.8,
       strokeWeight: 2,
-      radius: 500 // 0.5 km en metros
+      radius: 200 // 0.2 km en metros
     };
   }, []);
 

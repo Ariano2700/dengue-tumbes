@@ -43,7 +43,8 @@ function EmergencyContact() {
             ¿Tienes síntomas graves?
           </h2>
           <p className="text-white/90 mb-6" role="text" itemProp="description">
-            Si presentas síntomas graves, busca atención médica inmediata
+            Si presentas signos y síntomas de dengue con señales de alarma o
+            dengue grave, busca atención médica inmediata
           </p>
           <div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -78,11 +79,11 @@ function EmergencyContact() {
             >
               <Phone className="w-5 h-5 mr-2" aria-hidden="true" />
               <span>
-                Llamar Emergencias: <strong>913647627</strong>
+                Llamar Emergencias - SAMU: <strong>913647627</strong>
               </span>
             </button>
             <button
-              className="border-2 border-white text-white hover:bg-white hover:text-[var(--color-primary)] bg-transparent p-3 rounded-xl transition-all ease-in duration-200 cursor-pointer transform hover:scale-105"
+              className="bg-white text-[var(--color-primary)] hover:bg-white/90 flex items-center justify-center p-3 rounded-xl transition-all ease-in duration-200 cursor-pointer transform hover:scale-105"
               onClick={handleHealthCenterCall}
               type="button"
               aria-label="Llamar al Centro de Salud de Tumbes"
@@ -91,7 +92,7 @@ function EmergencyContact() {
               itemScope
               itemType="https://schema.org/MedicalOrganization"
             >
-              <span itemProp="name">Centro de Salud Tumbes</span>
+              <span itemProp="name">Acudir al centro de salud más cercano</span>
             </button>
           </div>
         </div>

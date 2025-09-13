@@ -146,9 +146,9 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
 
   const getSeverityLabel = (severity: string) => {
     switch (severity) {
-      case "severe": return "Grave";
-      case "moderate": return "Moderado";
-      case "mild": return "Leve";
+      case "severe": return "Dengue Grave";
+      case "moderate": return "Dengue con señales de alarma";
+      case "mild": return "Dengue sin señales de alarma";
       default: return "";
     }
   }
@@ -186,7 +186,12 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
                     step="0.1"
                     placeholder="36.5"
                     value={temperature}
-                    onChange={(e) => setTemperature(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (Number(value) < 0) return;
+                      setTemperature(value);
+                    }}
+                    min={0}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
@@ -204,7 +209,12 @@ export function SelfAssessmentForm({ onSubmit, isSubmitting }: SelfAssessmentFor
                   type="number"
                   placeholder="0"
                   value={daysSick}
-                  onChange={(e) => setDaysSick(e.target.value)}
+                  min={0}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (Number(value) < 0) return;
+                    setDaysSick(value);
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 {formErrors.daysSick && (

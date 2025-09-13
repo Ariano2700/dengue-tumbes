@@ -169,14 +169,14 @@ function Features() {
                   className="text-xl font-semibold mb-2"
                   itemProp="name"
                 >
-                  Evalúa Síntomas
+                  Evalúa Signos y Síntomas
                 </h3>
                 <p 
                   className="text-gray-400"
                   itemProp="text"
                 >
                   Completa el formulario de autoevaluación para identificar posibles
-                  síntomas de dengue de manera precisa
+                  síntomas de dengue de manera oportuna
                 </p>
               </div>
             </article>
@@ -213,7 +213,7 @@ function Features() {
                   itemProp="text"
                 >
                   Esta información se enviará al MINSA de Tumbes para que recibas la
-                  mejor atención médica y monitoreo comunitario
+                  mejor atención médica y monitoreo continuo
                 </p>
               </div>
             </article>
